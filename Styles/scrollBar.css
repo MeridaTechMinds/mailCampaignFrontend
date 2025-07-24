@@ -1,0 +1,12 @@
+.scroll1::-webkit-scrollbar {
+  width: 4px; /* Slim scrollbar */
+}
+
+.scroll1::-webkit-scrollbar-track {
+  background: transparent; /* Optional: transparent track */
+}
+
+.scroll1::-webkit-scrollbar-thumb {
+  background-color: white;  /* White scrollbar thumb */
+  border-radius: 10px;
+}

@@ -3,21 +3,35 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 8220",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 8220",
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-pdf/renderer": "^4.3.0",
+    "@reduxjs/toolkit": "^2.8.2",
+    "axios": "^1.10.0",
+    "bootstrap": "^5.3.7",
+    "dotenv": "^17.1.0",
+    "html2pdf.js": "^0.10.3",
+    "next": "15.3.5",
     "react": "^19.0.0",
+    "react-bootstrap": "^2.10.10",
     "react-dom": "^19.0.0",
-    "next": "15.3.5"
+    "react-quill-new": "^3.4.6",
+    "react-redux": "^9.2.0",
+    "react-toastify": "^11.0.5",
+    "react-virtualized": "^9.22.6",
+    "react-window": "^1.8.11"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
+    "@typescript-eslint/parser": "^8.38.0",
     "eslint": "^9",
     "eslint-config-next": "15.3.5",
-    "@eslint/eslintrc": "^3"
+    "tailwindcss": "^4",
+    "typescript": "^5.8.3"
   }
 }
