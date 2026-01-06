@@ -11,7 +11,7 @@ const LoginForm = () => {
     let [formData, setFormData] = useState({
         userName: '',
         password: '',
-        type: ''
+        type: 'user'
     })
     let [loading, setLoading] = useState()
     let handleChange = (e) => {

@@ -8,9 +8,9 @@ import DeleteButton from '../Buttons/DeleteButton'
 import EditPenIcon from '@/Icons/EditPenIcon'
 import EditMailButton from '../Buttons/EditMailButton'
 import { deletemultipleMail } from '@/axiosAPIs/apiCalls'
-import useQueryParams from '@/hooks/useQueryParams'
+import useQueryParams from '@/Hooks/useQueryParams'
 
-const MailBoxTable = ({ count,total, data, getData, loading, mailCowData }) => {
+const MailBoxTable = ({ count, total, data, getData, loading, mailCowData }) => {
     let navigate = useRouter()
     let [selectedMails, setSelectedMails] = useState([])
     let [filteredMail, setFilteredMail] = useState([])
@@ -77,7 +77,7 @@ const MailBoxTable = ({ count,total, data, getData, loading, mailCowData }) => {
                             <th> Message </th>
                             <th> Log Password </th>
                             <th> Mail Type </th>
-
+                            <th> Server Connection </th>
                             <th>Active Status</th>
                             <th> Action </th>
                         </tr>
@@ -115,7 +115,8 @@ const MailBoxTable = ({ count,total, data, getData, loading, mailCowData }) => {
                                             <td> {mcData?.messages} </td>
                                             <td> {item?.logPassword} </td>
                                             <td> {item?.mailBoxType} </td>
-                                            <td>{!mcData ? ' Not Connected to server ' : item?.active == '1' ? 'Active' : 'InActive'} </td>
+                                            <td>  {item?.connectMc ? 'Connected (Able to send mail) ' : 'Not Connected'} </td>
+                                            <td>{item?.active == '1' ? 'Active' : 'InActive'} </td>
                                             <td>
                                                 <div className=' flex items-center justify-center gap-2 ' >
                                                     <EditMailButton data={item} mail={email} getData={getData} />

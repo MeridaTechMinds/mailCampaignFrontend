@@ -3,7 +3,7 @@ import { axiosInstance, getParticularDomainDetailsAPI } from '@/axiosAPIs/apiCal
 import MailBoxTable from '@/Components/Tables/MailBoxTable'
 import TablePagination from '@/Components/Tables/TablePagination'
 import BackButton from '@/Components/UtilsCom/BackButton'
-import useQueryParams from '@/hooks/useQueryParams'
+import useQueryParams from '@/Hooks/useQueryParams'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import LoadingPage from '../UtilsCom/LoadingPage'

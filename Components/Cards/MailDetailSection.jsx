@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getUserDataToken } from '@/Redux/utilSlice'
 
 const MailDetailSection = ({ type, uid }) => {
-    let { userData } = useSelector((state) => state.data)
+    let { userData } = useSelector((state) => state.util)
     let [mailDetail, setMailDetail] = useState()
     let [userDetails, setUserDetails] = useState()
     let [loading, setLoading] = useState()
@@ -61,23 +61,35 @@ const MailDetailSection = ({ type, uid }) => {
                             {/* To */}
                             <div className='  ' >
                                 <p className=' mb-0 text-slate-400 ' > To
-                                    <span className=' bg-blue-400 text-white rounded p-1 text-sm mx-2' > {mailDetail?.to && mailDetail?.to?.split(',').length} </span> </p>
+                                    {(userDetails == 'admin' || userDetails == 'super-admin') &&
+                                        <span className=' bg-blue-400 text-white rounded p-1 text-sm mx-2' >
+                                            {mailDetail?.to && mailDetail?.to?.split(',').length} </span>}
+                                </p>
                                 {mailDetail?.to?.indexOf(',') != -1 ?
-                                    <div className=' flex max-h-[15vh] overflow-y-auto items-center gap-2 flex-wrap ' >
-                                        {
-                                            mailDetail?.to?.split(',').map((toMail, index) => {
-                                                let mail = toMail?.indexOf('<') != -1 ? fromAddressformat(toMail, [2]) : toMail
-                                                return (
-                                                    <p key={index}
-                                                        className=' bg-slate-600/20 rounded-full px-2 p-1 !text-xs '>
-                                                        {mail}
-                                                    </p>
-                                                )
-                                            })
-                                        }
-                                    </div> : typeof mailDetail?.to == 'string' ?
+                                    (userDetails == 'admin' || userDetails == 'super-admin') || (type.toLowerCase() != 'inbox') ?
+                                        <div className=' flex max-h-[15vh] overflow-y-auto items-center gap-2 flex-wrap ' >
+                                            {
+                                                mailDetail?.to?.split(',').map((toMail, index) => {
+                                                    let mail = toMail?.indexOf('<') != -1 ? fromAddressformat(toMail, [2]) : toMail
+                                                    return (
+                                                        <p key={index}
+                                                            className=' bg-slate-600/20 rounded-full px-2 p-1 !text-xs '>
+                                                            {mail}
+                                                        </p>
+                                                    )
+                                                })
+                                            }
+                                        </div> :
+
+                                        <div>
+                                            {/* For the inbox */}
+                                            {userData?.userMail}
+                                        </div>
+
+                                    : typeof mailDetail?.to == 'string' ?
                                         <p className=' bg-slate-600/20 rounded-full px-2 p-1 !text-xs '>
-                                            {mailDetail.to}  </p> : ''}
+                                            {mailDetail.to}
+                                        </p> : ''}
                             </div>
                         </div>
 

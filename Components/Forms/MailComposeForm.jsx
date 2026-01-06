@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import SelectMyTeamButton from '../Buttons/SelectMyTeamButton'
 import SelectAdmins from '../Buttons/SelectAdmins'
+import * as XLSX from 'xlsx';
 
 const MailComposeForm = ({ reply, setShowModal }) => {
     let { userData } = useSelector((state) => state.util)
@@ -90,6 +91,32 @@ const MailComposeForm = ({ reply, setShowModal }) => {
     useEffect(() => {
         setUserDetails(sessionStorage.getItem('action'))
     }, [])
+
+    let excelReader = (e) => {
+        let file = e.target.files[0]
+        if (file) {
+            let reader = new FileReader()
+            reader.onload = (evt) => {
+                let data = evt.target.result
+                const workbook = XLSX.read(data, { type: 'binary' })
+                let sheetName = workbook.SheetNames[0]
+                let workSheet = workbook.Sheets[sheetName]
+                let jsonData = XLSX.utils.sheet_to_json(workSheet, { defval: '' })
+                let email = jsonData?.map((obj) => obj.mail)?.filter((obj) => obj != undefined && obj != '')
+                if (email.length == 0) {
+                    toast.warning(`No email is added check the file , the column has to be "mail"`)
+                } else {
+                    setFormData((prev) => ({
+                        ...prev,
+                        to: email
+                    }))
+                }
+                console.log(email, 'json Data');
+
+            }
+            reader.readAsBinaryString(file)
+        }
+    }
     return (
         <div className=' poppins' >
 
@@ -100,7 +127,23 @@ const MailComposeForm = ({ reply, setShowModal }) => {
                         <SelectMyTeamButton setFormData={setFormData} />}
                     {userDetails == 'super-admin' && <SelectAdmins setFormData={setFormData} />}
                 </div>
-                To: <span className=' bg-slate-900/10 p-1 rounded-full ' > {formData?.to?.length} </span>
+                <main className=' flex justify-between items-center ' >
+                    <div>
+                        To: <span className=' bg-slate-900/10 p-1 rounded-full ' > {formData?.to?.length} </span>
+                    </div>
+                    <div className=' flex gap-3 items-center my-2 ' >
+
+                        <input type="file" id='excelupload' className=' hidden ' accept='.xlsx, .xls' onChange={(e) => excelReader(e)} />
+                        <label htmlFor="excelupload" className=' bg-slate-500 text-white rounded p-2 !text-sm ' > Excel Uplaod </label>
+
+                        <button onClick={() => setFormData((prev) => ({
+                            ...prev,
+                            to: []
+                        }))} className=' bg-blue-600 text-white p-2 rounded !text-sm ' >
+                            Reset To Address
+                        </button>
+                    </div>
+                </main>
                 <div className=' !text-xl flex gap-2 max-h-[30vh] overflow-y-scroll ' >
 
                     <section className='flex flex-wrap !text-sm gap-3 items-center ' >
@@ -117,7 +160,19 @@ const MailComposeForm = ({ reply, setShowModal }) => {
                 </div>
                 <section className=' w-full items-center pe-3 ' >
                     <div className=' relative ' >
-                        <input type="text" value={receiptent} onChange={(e) => setReceiptent(e.target.value)}
+                        <input type="text" value={receiptent} onChange={(e) => {
+                            let value = e.target.value
+                            if (value.indexOf(' ') != -1) {
+                                let arry = value?.split(' ').concat(formData.to || [])
+                                let uniqueArry = new Set(arry)
+                                arry = [...uniqueArry]
+                                setFormData((prev) => ({
+                                    ...prev,
+                                    to: arry?.map((mail) => mail.replace(/\s/g, ''))
+                                }))
+                            } else
+                                setReceiptent(e.target.value)
+                        }}
                             onKeyDown={(e) => {
                                 if (e.key == 'Enter')
                                     addReceiptentToSendingAddress()

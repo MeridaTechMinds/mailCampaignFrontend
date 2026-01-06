@@ -20,7 +20,7 @@ const TablePagination = ({ setData, data, loading }) => {
         if (!page)
             setPage(1)
     }, [])
-    let totalPages = data?.count ? Math.ceil(Number(data?.count) / 25) : 0
+    let totalPages = data?.count ? Math.ceil(Number(data?.count) / 500) : 0
     return (
         <div className={` ${loading ? 'd-none' : ''} flex justify-between items-center my-3 `} >
             <div className=' ' >

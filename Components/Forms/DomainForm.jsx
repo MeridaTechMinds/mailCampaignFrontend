@@ -20,7 +20,7 @@ const DomainForm = ({ domain }) => {
         defquota: "500",
         relay_all_recipients: "0",
         rl_frame: "s",
-        rl_value: "10",
+        rl_value: "0",
         restart_sogo: "10",
         excelFile: null
     }
